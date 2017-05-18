@@ -48,3 +48,5 @@ DELETE FROM [AttributeValue] WHERE
 DELETE FROM [Block] WHERE [PageId] IN (@p_SelfCheckoutPageId,@p_BulkCheckoutPageId);
 
 DELETE FROM [Page] WHERE [Guid] IN (@p_SelfCheckoutPageGuid,@p_BulkCheckoutPageGuid);
+
+DELETE FROM [PageRoute] WHERE [PageId]=@p_SelfCheckoutPageId
