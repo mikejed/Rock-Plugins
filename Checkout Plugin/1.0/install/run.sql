@@ -4,6 +4,8 @@ DECLARE @i_CheckoutChild AS INT = (SELECT TOP 1 [Order] FROM [Page] WHERE [Paren
 DECLARE @p_SelfCheckoutPageGuid AS UNIQUEIDENTIFIER = '34dc70e8-58a8-43e3-b2ba-f4b2b656ebd6';
 DECLARE @p_BulkCheckoutPageGuid AS UNIQUEIDENTIFIER = 'ec6fd761-f343-491a-90b1-c63370b12cc9';
 
+DECLARE @l_FullWidthCheckoutLayout = (SELECT [Id] FROM [Layout] WHERE [Name]='Full Width' AND [SiteId] = (SELECT [Id] FROM [Site] WHERE [Guid]='15aefc01-acb3-4f5d-b83e-ab3ab7f2a54a'));
+
 DECLARE @r_CheckoutPageRouteGuid AS UNIQUEIDENTIFIER = '21229c4b-41f0-4a71-ad61-4ddb7401cbda';
 
 DECLARE @b_SelfCheckoutUndoGuid AS UNIQUEIDENTIFIER = '0e8ca1d9-ff27-43e9-9817-3c8d0e52e640';
@@ -39,7 +41,7 @@ DECLARE @a_ddPaneledGridId AS INT = (SELECT [Id] FROM [Attribute] WHERE [Guid] =
 INSERT INTO [Page]
 	([InternalName], [ParentPageId], [PageTitle], [IsSystem], [LayoutId], [EnableViewState], [PageDisplayTitle], [PageDisplayBreadCrumb], [PageDisplayIcon], [PageDisplayDescription], [DisplayInNavWhen], [MenuDisplayChildPages], [BreadCrumbDisplayName], [Order], [OutputCacheDuration], [IncludeAdminFooter], [Guid], [BrowserTitle])
 	VALUES
-	("Self Check-out", @p_CheckoutPageId, "Self Check-out", 0, 6, 1, 1, 1, 1, 1, 0, 1, 1, @i_CheckoutChild, 0, 1, @p_SelfCheckoutPageGuid, "Self Check-out");
+	("Self Check-out", @p_CheckoutPageId, "Self Check-out", 0, @l_FullWidthCheckoutLayout, 1, 1, 1, 1, 1, 0, 1, 1, @i_CheckoutChild, 0, 1, @p_SelfCheckoutPageGuid, "Self Check-out");
 
 -- Store the Page ID for the self-checkout page
 DECLARE @p_SelfCheckoutPageId AS INT = (SELECT [Id] FROM [Page] WHERE [Guid] = @p_SelfCheckoutPageGuid);
@@ -55,7 +57,7 @@ IF (SELECT count(*) FROM [PageRoute] WHERE [Route]='checkout') = 0
 INSERT INTO [Page]
 	([InternalName], [ParentPageId], [PageTitle], [IsSystem], [LayoutId], [EnableViewState], [PageDisplayTitle], [PageDisplayBreadCrumb], [PageDisplayIcon], [PageDisplayDescription], [DisplayInNavWhen], [MenuDisplayChildPages], [BreadCrumbDisplayName], [Order], [OutputCacheDuration], [IncludeAdminFooter], [Guid], [BrowserTitle])
 	VALUES
-	("Bulk Check-out", @p_BulkCheckoutPageId, "Bulk Check-out", 0, 6, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, @p_BulkCheckoutPageGuid, "Bulk Check-out");
+	("Bulk Check-out", @p_BulkCheckoutPageId, "Bulk Check-out", 0, @l_FullWidthCheckoutLayout, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, @p_BulkCheckoutPageGuid, "Bulk Check-out");
 
 -- Store the Page ID for the bulk checkout page
 DECLARE @p_BulkCheckoutPageId AS INT = (SELECT [Id] FROM [Page] WHERE [Guid] = @p_BulkCheckoutPageGuid);
