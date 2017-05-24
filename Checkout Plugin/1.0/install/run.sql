@@ -108,7 +108,7 @@ FROM
 WHERE
 	a.[Id]=@checkout
 	AND a.[EndDateTime] IS NULL;
-UPDATE [Attendance] SET [EndDateTime]=''{{ ''Now'' | Date:''yyyy'' }}-{{ ''Now'' | Date:''MM'' }}-{{ ''Now'' | Date:''dd'' }} {{ ''Now'' | Date:''hh'' }}:{{ ''Now'' | Date:''mm'' }}:{{ ''Now'' | Date:''ss'' }}'' WHERE [Id]=@checkout AND [EndDateTime] IS NULL;', NEWID());
+UPDATE [Attendance] SET [EndDateTime]=''{{ ''Now'' | Date:''yyyy'' }}-{{ ''Now'' | Date:''MM'' }}-{{ ''Now'' | Date:''dd'' }} {{ ''Now'' | Date:''HH'' }}:{{ ''Now'' | Date:''mm'' }}:{{ ''Now'' | Date:''ss'' }}'' WHERE [Id]=@checkout AND [EndDateTime] IS NULL;', NEWID());
 INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [Guid]) VALUES (0, @a_ddUrlMaskId, @BlockId, '', NEWID());
 INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [Guid]) VALUES (0, @a_ddShowColumnsId, @BlockId, 'False', NEWID());
 INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [Guid]) VALUES (0, @a_ddMergeFieldsId, @BlockId, '', NEWID());
