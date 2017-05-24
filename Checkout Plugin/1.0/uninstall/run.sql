@@ -4,7 +4,7 @@ DECLARE @p_BulkCheckoutPageGuid AS UNIQUEIDENTIFIER = 'ec6fd761-f343-491a-90b1-c
 DECLARE @p_SelfCheckoutPageId AS INT = (SELECT TOP 1 [Id] FROM [Page] WHERE [Guid] = @p_SelfCheckoutPageGuid);
 DECLARE @p_BulkCheckoutPageId AS INT = (SELECT TOP 1 [Id] FROM [Page] WHERE [Guid] = @p_BulkCheckoutPageGuid);
 
-DECLARE @r_CheckoutPageRouteGuid AS UNIQUEIDENTIFIER = '21229c4b-41f0-4a71-ad61-4ddb7401cbda';
+--DECLARE @r_CheckoutPageRouteGuid AS UNIQUEIDENTIFIER = '21229c4b-41f0-4a71-ad61-4ddb7401cbda';
 
 DECLARE @b_SelfCheckoutUndoGuid AS UNIQUEIDENTIFIER = '0e8ca1d9-ff27-43e9-9817-3c8d0e52e640';
 DECLARE @b_SelfCheckoutUndoId AS INT = (SELECT TOP 1 [Id] FROM [Block] WHERE [Guid] = @b_SelfCheckoutUndoGuid);
@@ -42,8 +42,38 @@ DECLARE @a_ddTimeoutId AS INT = (SELECT [Id] FROM [Attribute] WHERE [Guid] = '08
 DECLARE @a_ddPaneledGridId AS INT = (SELECT [Id] FROM [Attribute] WHERE [Guid] = '653994da-545e-4fba-86f6-3e0b6a217e10');
 
 DELETE FROM [AttributeValue] WHERE
-	[EntityId] IN (@b_SelfCheckoutUndoId,@b_SelfCheckoutSqlId,@b_SelfCheckoutListId,@b_BulkCheckoutLinkId,@b_BulkCheckoutSqlId,@b_BulkCheckoutListId,@b_SelfCheckoutLinkId)
+	[EntityId] = @b_SelfCheckoutUndoId
 	AND [AttributeId] IN (@a_ddUpdatePageId,@a_ddQueryParamsId,@a_ddColumnsId,@a_ddQueryId,@a_ddUrlMaskId,@a_ddShowColumnsId,@a_ddMergeFieldsId,@a_ddFormattedOutputId,@a_ddPersonReportId,@a_ddStoredProcedureId,@a_ddShowCommunicateId,@a_ddShowMergePersonId,@a_ddShowBulkUpdateId,@a_ddShowMergeTemplateId,@a_ddPageTitleLavaId,@a_ddShowGridFilterId,@a_ddTimeoutId,@a_ddPaneledGridId);
+
+DELETE FROM [AttributeValue] WHERE
+	[EntityId] = @b_SelfCheckoutSqlId
+	AND [AttributeId] IN (@a_ddUpdatePageId,@a_ddQueryParamsId,@a_ddColumnsId,@a_ddQueryId,@a_ddUrlMaskId,@a_ddShowColumnsId,@a_ddMergeFieldsId,@a_ddFormattedOutputId,@a_ddPersonReportId,@a_ddStoredProcedureId,@a_ddShowCommunicateId,@a_ddShowMergePersonId,@a_ddShowBulkUpdateId,@a_ddShowMergeTemplateId,@a_ddPageTitleLavaId,@a_ddShowGridFilterId,@a_ddTimeoutId,@a_ddPaneledGridId);
+
+DELETE FROM [AttributeValue] WHERE
+	[EntityId] = @b_SelfCheckoutListId
+	AND [AttributeId] IN (@a_ddUpdatePageId,@a_ddQueryParamsId,@a_ddColumnsId,@a_ddQueryId,@a_ddUrlMaskId,@a_ddShowColumnsId,@a_ddMergeFieldsId,@a_ddFormattedOutputId,@a_ddPersonReportId,@a_ddStoredProcedureId,@a_ddShowCommunicateId,@a_ddShowMergePersonId,@a_ddShowBulkUpdateId,@a_ddShowMergeTemplateId,@a_ddPageTitleLavaId,@a_ddShowGridFilterId,@a_ddTimeoutId,@a_ddPaneledGridId);
+
+DELETE FROM [AttributeValue] WHERE
+	[EntityId] = @b_BulkCheckoutLinkId
+	AND [AttributeId] IN (@a_ddUpdatePageId,@a_ddQueryParamsId,@a_ddColumnsId,@a_ddQueryId,@a_ddUrlMaskId,@a_ddShowColumnsId,@a_ddMergeFieldsId,@a_ddFormattedOutputId,@a_ddPersonReportId,@a_ddStoredProcedureId,@a_ddShowCommunicateId,@a_ddShowMergePersonId,@a_ddShowBulkUpdateId,@a_ddShowMergeTemplateId,@a_ddPageTitleLavaId,@a_ddShowGridFilterId,@a_ddTimeoutId,@a_ddPaneledGridId);
+
+DELETE FROM [AttributeValue] WHERE
+	[EntityId] = @b_BulkCheckoutSqlId
+	AND [AttributeId] IN (@a_ddUpdatePageId,@a_ddQueryParamsId,@a_ddColumnsId,@a_ddQueryId,@a_ddUrlMaskId,@a_ddShowColumnsId,@a_ddMergeFieldsId,@a_ddFormattedOutputId,@a_ddPersonReportId,@a_ddStoredProcedureId,@a_ddShowCommunicateId,@a_ddShowMergePersonId,@a_ddShowBulkUpdateId,@a_ddShowMergeTemplateId,@a_ddPageTitleLavaId,@a_ddShowGridFilterId,@a_ddTimeoutId,@a_ddPaneledGridId);
+
+DELETE FROM [AttributeValue] WHERE
+	[EntityId] = @b_BulkCheckoutListId
+	AND [AttributeId] IN (@a_ddUpdatePageId,@a_ddQueryParamsId,@a_ddColumnsId,@a_ddQueryId,@a_ddUrlMaskId,@a_ddShowColumnsId,@a_ddMergeFieldsId,@a_ddFormattedOutputId,@a_ddPersonReportId,@a_ddStoredProcedureId,@a_ddShowCommunicateId,@a_ddShowMergePersonId,@a_ddShowBulkUpdateId,@a_ddShowMergeTemplateId,@a_ddPageTitleLavaId,@a_ddShowGridFilterId,@a_ddTimeoutId,@a_ddPaneledGridId);
+
+DELETE FROM [AttributeValue] WHERE
+	[EntityId] = @b_SelfCheckoutLinkId
+	AND [AttributeId] IN (@a_ddUpdatePageId,@a_ddQueryParamsId,@a_ddColumnsId,@a_ddQueryId,@a_ddUrlMaskId,@a_ddShowColumnsId,@a_ddMergeFieldsId,@a_ddFormattedOutputId,@a_ddPersonReportId,@a_ddStoredProcedureId,@a_ddShowCommunicateId,@a_ddShowMergePersonId,@a_ddShowBulkUpdateId,@a_ddShowMergeTemplateId,@a_ddPageTitleLavaId,@a_ddShowGridFilterId,@a_ddTimeoutId,@a_ddPaneledGridId);
+
+SET @BlockId = (SELECT [Id] FROM [Block] WHERE [Guid] = @b_BulkCheckoutLinkGuid);
+DELETE FROM [HtmlContent] WHERE [BlockId]=@BlockId
+
+SET @BlockId = (SELECT [Id] FROM [Block] WHERE [Guid] = @b_SelfCheckoutLinkGuid);
+DELETE FROM [HtmlContent] WHERE [BlockId]=@BlockId
 
 DELETE FROM [Block] WHERE [PageId] IN (@p_SelfCheckoutPageId,@p_BulkCheckoutPageId);
 

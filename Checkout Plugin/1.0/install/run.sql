@@ -1,5 +1,5 @@
-DECLARE @p_CheckoutPageId AS INT = (SELECT [Id] FROM [Page] WHERE [Guid] = 'cdf2c599-d341-42fd-b7dc-cd402ea96050');
-DECLARE @i_CheckoutChild AS INT = (SELECT TOP 1 [Order] FROM [Page] WHERE [ParentPageId]=@p_CheckoutPageId ORDER BY [Order] DESC)+1;
+DECLARE @p_CheckinPageId AS INT = (SELECT [Id] FROM [Page] WHERE [Guid] = 'cdf2c599-d341-42fd-b7dc-cd402ea96050');
+DECLARE @i_CheckoutChild AS INT = (SELECT TOP 1 [Order] FROM [Page] WHERE [ParentPageId]=@p_CheckinPageId ORDER BY [Order] DESC)+1;
 
 DECLARE @p_SelfCheckoutPageGuid AS UNIQUEIDENTIFIER = '34dc70e8-58a8-43e3-b2ba-f4b2b656ebd6';
 DECLARE @p_BulkCheckoutPageGuid AS UNIQUEIDENTIFIER = 'ec6fd761-f343-491a-90b1-c63370b12cc9';
@@ -7,6 +7,9 @@ DECLARE @p_BulkCheckoutPageGuid AS UNIQUEIDENTIFIER = 'ec6fd761-f343-491a-90b1-c
 DECLARE @l_FullWidthCheckoutLayout = (SELECT [Id] FROM [Layout] WHERE [Name]='Full Width' AND [SiteId] = (SELECT [Id] FROM [Site] WHERE [Guid]='15aefc01-acb3-4f5d-b83e-ab3ab7f2a54a'));
 
 DECLARE @r_CheckoutPageRouteGuid AS UNIQUEIDENTIFIER = '21229c4b-41f0-4a71-ad61-4ddb7401cbda';
+
+DECLARE @b_DynamicDataBlockTypeId AS INT = (SELECT [Id] FROM [BlockType] WHERE [Guid] = 'e31e02e9-73f6-4b3e-98ba-e0e4f86ca126'); --should be 143
+DECLARE @b_HtmlBlockTypeId AS INT = (SELECT [Id] FROM [BlockType] WHERE [Guid] = '19b61d65-37e3-459f-a44f-def0089118a3'); --should be 6
 
 DECLARE @b_SelfCheckoutUndoGuid AS UNIQUEIDENTIFIER = '0e8ca1d9-ff27-43e9-9817-3c8d0e52e640';
 DECLARE @b_SelfCheckoutSqlGuid AS UNIQUEIDENTIFIER = '1248629e-039f-4263-8d23-c3f5a4f52859';
@@ -57,7 +60,7 @@ IF (SELECT count(*) FROM [PageRoute] WHERE [Route]='checkout') = 0
 INSERT INTO [Page]
 	([InternalName], [ParentPageId], [PageTitle], [IsSystem], [LayoutId], [EnableViewState], [PageDisplayTitle], [PageDisplayBreadCrumb], [PageDisplayIcon], [PageDisplayDescription], [DisplayInNavWhen], [MenuDisplayChildPages], [BreadCrumbDisplayName], [Order], [OutputCacheDuration], [IncludeAdminFooter], [Guid], [BrowserTitle])
 	VALUES
-	("Bulk Check-out", @p_BulkCheckoutPageId, "Bulk Check-out", 0, @l_FullWidthCheckoutLayout, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, @p_BulkCheckoutPageGuid, "Bulk Check-out");
+	("Bulk Check-out", @p_CheckinPageId, "Bulk Check-out", 0, @l_FullWidthCheckoutLayout, 1, 1, 1, 1, 1, 0, 1, 1, @i_Checkoutchild, 0, 1, @p_BulkCheckoutPageGuid, "Bulk Check-out");
 
 -- Store the Page ID for the bulk checkout page
 DECLARE @p_BulkCheckoutPageId AS INT = (SELECT [Id] FROM [Page] WHERE [Guid] = @p_BulkCheckoutPageGuid);
@@ -66,7 +69,7 @@ DECLARE @p_BulkCheckoutPageId AS INT = (SELECT [Id] FROM [Page] WHERE [Guid] = @
 INSERT INTO [Block]
 	([IsSystem], [PageId], [BlockTypeId], [Zone], [Order], [Name], [OutputCacheDuration], [Guid])
 	VALUES
-	(0, @p_SelfCheckoutPageId, 143, 'Main', 0, "Undo checkout", 0, @b_SelfCheckoutUndoGuid);
+	(0, @p_SelfCheckoutPageId, @b_DynamicDataBlockTypeId, 'Main', 0, "Undo checkout", 0, @b_SelfCheckoutUndoGuid);
 SET @BlockId = (SELECT [ID] FROM [Block] WHERE [Guid] = @b_SelfCheckoutUndoGuid);
 INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [Guid]) VALUES (0, @a_ddUpdatePageId, @BlockId, 'True', NEWID());
 INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [Guid]) VALUES (0, @a_ddQueryParamsId, @BlockId, 'undocheckout=0', NEWID());
@@ -91,7 +94,7 @@ INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [G
 INSERT INTO [Block]
 	([IsSystem], [PageId], [BlockTypeId], [Zone], [Order], [Name], [OutputCacheDuration], [Guid])
 	VALUES
-	(0, @p_SelfCheckoutPageId, 143, 'Main', 1, "Checkout SQL", 0, @b_SelfCheckoutSqlGuid);
+	(0, @p_SelfCheckoutPageId, @b_DynamicDataBlockTypeId, 'Main', 1, "Checkout SQL", 0, @b_SelfCheckoutSqlGuid);
 SET @BlockId = (SELECT [ID] FROM [Block] WHERE [Guid] = @b_SelfCheckoutSqlGuid);
 INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [Guid]) VALUES (0, @a_ddUpdatePageId, @BlockId, 'True', NEWID());
 INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [Guid]) VALUES (0, @a_ddQueryParamsId, @BlockId, '@checkout=0', NEWID());
@@ -132,7 +135,7 @@ INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [G
 INSERT INTO [Block]
 	([IsSystem], [PageId], [BlockTypeId], [Zone], [Order], [Name], [OutputCacheDuration], [Guid])
 	VALUES
-	(0, @p_SelfCheckoutPageId, 143, 'Main', 2, "Check-out list", 0, @b_SelfCheckoutListGuid);
+	(0, @p_SelfCheckoutPageId, @b_DynamicDataBlockTypeId, 'Main', 2, "Check-out list", 0, @b_SelfCheckoutListGuid);
 SET @BlockId = (SELECT [ID] FROM [Block] WHERE [Guid] = @b_SelfCheckoutListGuid);
 INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [Guid]) VALUES (0, @a_ddUpdatePageId, @BlockId, 'True', NEWID());
 INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [Guid]) VALUES (0, @a_ddQueryParamsId, @BlockId, '@checkout=0', NEWID());
@@ -175,7 +178,7 @@ INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [G
 INSERT INTO [Block]
 	([IsSystem], [PageId], [BlockTypeId], [Zone], [Order], [Name], [OutputCacheDuration], [Guid])
 	VALUES
-	(0, @p_SelfCheckoutPageId, 6, 'Main', 3, "Bulk Checkout Link", 0, @b_BulkCheckoutLinkGuid);
+	(0, @p_SelfCheckoutPageId, @b_HtmlBlockTypeId, 'Main', 3, "Bulk Checkout Link", 0, @b_BulkCheckoutLinkGuid);
 SET @BlockId = (SELECT [Id] FROM [Block] WHERE [Guid] = @b_BulkCheckoutLinkGuid);
 INSERT INTO [HtmlContent] ([BlockId], [Version], [Content], [IsApproved], [Guid]) VALUES (@BlockId, 1, '<a style="position:fixed;bottom:1em;right:3em;color:rgba(255,255,255,0.5);z-index:1000;" href="/checkout/bulk"><i class="fa fa-sign-out fa-4x"></i></a>', 1, NEWID());
 	
@@ -183,7 +186,7 @@ INSERT INTO [HtmlContent] ([BlockId], [Version], [Content], [IsApproved], [Guid]
 INSERT INTO [Block]
 	([IsSystem], [PageId], [BlockTypeId], [Zone], [Order], [Name], [OutputCacheDuration], [Guid])
 	VALUES
-	(0, @p_BulkCheckoutPageId, 143, 'Main', 0, "Bulk Checkout SQL", 0, @b_BulkCheckoutSqlGuid);
+	(0, @p_BulkCheckoutPageId, @b_DynamicDataBlockTypeId, 'Main', 0, "Bulk Checkout SQL", 0, @b_BulkCheckoutSqlGuid);
 SET @BlockId = (SELECT [Id] FROM [Block] WHERE [Guid] = @b_BulkCheckoutSqlGuid);
 INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [Guid]) VALUES (0, @a_ddUpdatePageId, @BlockId, 'True', NEWID());
 INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [Guid]) VALUES (0, @a_ddQueryParamsId, @BlockId, 'performCheckout=0;coyyyy=1980;comm=01;codd=01;cohh=0;comin=0', NEWID());
@@ -217,7 +220,7 @@ INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [G
 INSERT INTO [Block]
 	([IsSystem], [PageId], [BlockTypeId], [Zone], [Order], [Name], [OutputCacheDuration], [Guid])
 	VALUES
-	(0, @p_BulkCheckoutPageId, 143, 'Main', 1, "People List", 0, @b_BulkCheckoutListGuid);
+	(0, @p_BulkCheckoutPageId, @b_DynamicDataBlockTypeId, 'Main', 1, "People List", 0, @b_BulkCheckoutListGuid);
 SET @BlockId = (SELECT [Id] FROM [Block] WHERE [Guid] = @b_BulkCheckoutListGuid);
 NSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [Guid]) VALUES (0, @a_ddUpdatePageId, @BlockId, 'True', NEWID());
 INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [Guid]) VALUES (0, @a_ddQueryParamsId, @BlockId, '@performCheckout=0', NEWID());
@@ -312,7 +315,7 @@ INSERT INTO [AttributeValue] ([IsSystem], [AttributeId], [EntityId], [Value], [G
 INSERT INTO [Block]
 	([IsSystem], [PageId], [BlockTypeId], [Zone], [Order], [Name], [OutputCacheDuration], [Guid])
 	VALUES
-	(0, @p_BulkCheckoutPageId, 6, 'Main', 2, "Self-Checkout Link", 0, @b_SelfCheckoutLinkGuid);
+	(0, @p_BulkCheckoutPageId, @b_HtmlBlockTypeId, 'Main', 2, "Self-Checkout Link", 0, @b_SelfCheckoutLinkGuid);
 
 SET @BlockId = (SELECT [Id] FROM [Block] WHERE [Guid] = @b_SelfCheckoutLinkGuid);
 INSERT INTO [HtmlContent] ([BlockId], [Version], [Content], [IsApproved], [Guid]) VALUES (@BlockId, 1, '<a style="position:fixed;bottom:1em;right:3em;color:rgba(255,255,255,0.5);z-index:1000;" href="/checkout"><i class="fa fa-backward fa-4x"></i></a>', 1, NEWID());
