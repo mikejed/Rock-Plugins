@@ -5,7 +5,7 @@ And while the ModelMap is an incredible tool for the C# folks and Lava relations
 
 This plugin seeks to help fill that gap for the time being by providing the one-to-one links from table to table. For instance, it will show you that the `[GroupMember].[PersonId]` column should be joined with `[Person].[Id]`, but that `[Attendance].[PersonAliasId]` should be joined with `[PersonAlias].[Id]`
 
-![Screenshot](https://user-images.githubusercontent.com/6932047/26900800-43c836d8-4b88-11e7-98ea-83e5a695bd72.png "Sample database map")
+![Screenshot](../SQL%20Map%20Plugin/screenshot.png?raw "Sample database map")
 
 ## Attribute Values
 There is a limitation though; since this is an automatically-generated list, it *doesn't* show _all_ of the links you'll need. One of the notable missing relationships has to do with getting Attribute Values: since lookups are usually done based on [AttributeValue].[EntityId] and [AttributeValue].[AttributeId] together, there's no one-to-one relationship to match.
