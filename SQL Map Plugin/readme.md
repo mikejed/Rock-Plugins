@@ -12,7 +12,8 @@ There is a limitation though; since this is an automatically-generated list, it 
 
 Here's an example of how to get the value of the `BaptismDate` attribute for a Person with ID 123:
 
-```SELECT
+```
+SELECT
     p.[NickName] + ' ' + p.[LastName] AS "Name"
     ,a.[Name]
     ,av.[Value]
