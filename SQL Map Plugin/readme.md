@@ -1,3 +1,4 @@
+![Icon](../SQL%20Map%20Plugin/package-icon.png?raw=true "Project Icon")
 ## Mapping Rock's database
 Rock customizers seem to largely fall into two camps- the developer-type who are quite comfortable with C# and the ways that you can access Rock data that getting into the source code offers, and those of us who use a lot of DynamicData blocks and SQL - often with help from the community. (Which, as I hope you've figured out by now, is a pretty stellar community and an incredible resource).
 
@@ -5,7 +6,7 @@ And while the ModelMap is an incredible tool for the C# folks and Lava relations
 
 This plugin seeks to help fill that gap for the time being by providing the one-to-one links from table to table. For instance, it will show you that the `[GroupMember].[PersonId]` column should be joined with `[Person].[Id]`, but that `[Attendance].[PersonAliasId]` should be joined with `[PersonAlias].[Id]`
 
-![Screenshot](../SQL%20Map%20Plugin/screenshot.png?raw "Sample database map")
+![Screenshot](../SQL%20Map%20Plugin/screenshot.png?raw=true "Sample database map")
 
 ## Attribute Values
 There is a limitation though; since this is an automatically-generated list, it *doesn't* show _all_ of the links you'll need. One of the notable missing relationships has to do with getting Attribute Values: since lookups are usually done based on [AttributeValue].[EntityId] and [AttributeValue].[AttributeId] together, there's no one-to-one relationship to match.
