@@ -18,6 +18,7 @@ Once you've installed this plugin, you can download the program from `Admin Tool
 
 ## Use
 Launch the program - you'll have to allow it to run because it's not digitally signed. A dialogue will open resembling the following:
+
 ![Icon](../Print%20blank%20labels%20Plugin/Screenshot.png?raw=true "Screenshot")
 * Begin by selecting the method of locating the printer.
     * The easy way is to enter the IP address of the Zebra printer you want to print the blank labels on, using "Network Printer (IP address)" mode.
