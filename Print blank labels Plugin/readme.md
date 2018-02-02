@@ -18,7 +18,7 @@ Once you've installed this plugin, you can download the program from `Admin Tool
 
 ## Use
 Launch the program - you'll have to allow it to run because it's not digitally signed. A dialogue will open resembling the following:
-![Icon](../Print%20blank%20labels%20Plugin/screenshot.png?raw=true "Screenshot")
+![Icon](../Print%20blank%20labels%20Plugin/Screenshot.png?raw=true "Screenshot")
 * Begin by selecting the method of locating the printer.
     * The easy way is to enter the IP address of the Zebra printer you want to print the blank labels on, using "Network Printer (IP address)" mode.
     * If your printer is installed locally, or on a print server, we'll have to use the UNC path. The printer will have to be shared for this to work, so if it's truly a local printer, open up your Printer Properties, go to the "Share" tab, and choose to share it. Take note of (and change if you wish!) the name, then you can access the printer in "Shared local printer" mode, using a path like `\\localhost\PrinterNameHere`.
