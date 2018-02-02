@@ -35,8 +35,8 @@ Launch the program - you'll have to allow it to run because it's not digitally s
 * The labels which are found and will be printed by the program are listed on the right side of the dialogue. If something looks wrong (the order, for instance), you'll have to exit the program, tweak the .prn files themselves, and run the program again.
 
 ## Troubleshooting
-* I got an error on Line -1: `Error: Subscript used with non-Array variable.`*
-This occurs when no .prn files are found in the same directory as the program. Make sure the program isn't in a .zip file and that your .prn files are in the same place as you've saved the program.
+**I got an error on Line -1: `Error: Subscript used with non-Array variable.`**
+* This occurs when no .prn files are found in the same directory as the program. Make sure the program isn't in a .zip file and that your .prn files are in the same place as you've saved the program.
 
 ## Support
 You can file a report here if you need help, but I encourage you to jump into the [Rock Slack channel](https://www.rockrms.com/slack) first. You can ping me by mentioning `@mikejed` in there.
