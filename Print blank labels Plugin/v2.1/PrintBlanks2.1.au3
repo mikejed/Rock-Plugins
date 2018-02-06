@@ -1,5 +1,5 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
-#AutoIt3Wrapper_icon=PrintBlanks.ico
+#AutoIt3Wrapper_icon=../PrintBlanks.ico
 #AutoIt3Wrapper_Res_Fileversion=2.1
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_LegalCopyright=Copyright 2018 by Michael Garrison
@@ -175,17 +175,19 @@ For $lbl=1 To $numLabels
 			TCPSend($socket,$contents)
 		Next
 	ElseIf $printerInstalled == "Local" Then
-		$contents=FileRead(@scriptdir & "\" & $files[$i])
-		$contents=StringReplace($contents,"???",$prefix & $code)
-		$file=FileOpen($tmpfilepath,2)
-		If $file = -1 Then
-			MsgBox(16,"Error","Error writing the temp file")
-			Exit
-		EndIf
-		FileWrite($file,$contents)
-		FileClose($file)
-		RunWait(@comspec & ' /c copy /b "' & $tmpfilepath & '" ' & $printerShareName,@scriptdir,@SW_HIDE)
-		FileDelete($tmpfilepath)
+		For $i=1 To $files[0]
+			$contents=FileRead(@scriptdir & "\" & $files[$i])
+			$contents=StringReplace($contents,"???",$prefix & $code)
+			$file=FileOpen($tmpfilepath,2)
+			If $file = -1 Then
+				MsgBox(16,"Error","Error writing the temp file")
+				Exit
+			EndIf
+			FileWrite($file,$contents)
+			FileClose($file)
+			RunWait(@comspec & ' /c copy /b "' & $tmpfilepath & '" ' & $printerShareName,@scriptdir,@SW_HIDE)
+			FileDelete($tmpfilepath)
+		Next
 	EndIf
 	
 	#Region get code for next set of labels
