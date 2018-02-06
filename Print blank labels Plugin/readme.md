@@ -6,6 +6,8 @@ But as much as possible, we don't want to compromise the security features that 
 
 To do this, you'll need two things: a slightly modified version of your .prn files, and this Windows .exe program.
 
+*If you'd like to test the program before spending time modifying your labels, you can also download the .zip file from the version folder at the top of this page- this includes the executable, the source code, and three sample labels from Christ's Church of Flagstaff.*
+
 ### Prepare your labels
 Start off by downloading copies of the .prn files you're using in Rock. Open them in Notepad, and then delete any lines with the normal merge fields. This is necessary to keep it from printing placeholder text where their names would usually go. Then, replace the placeholder for the security code with `???` - this is what this program will use to determine where to write the code it generates for this set of tags.
 
@@ -14,7 +16,7 @@ Do this for each of the labels you want to pre-print, and store them all togethe
 If you'd like, you can also download the files we use at my church from this repository.
 
 ### Get the program
-Once you've installed this plugin, you can download the program from `Admin Tools -> Power Tools -> External Applications`. But that just links you to the program in this repository, so you can download it right from here, too. Save it in the same directory as the .prn files you've prepared. Then run it.
+Once you've installed this plugin, you can download the program from `Admin Tools -> Power Tools -> External Applications`. But that just links you to the program in this repository, so you since you're already here, you can browse the version folders at the top of this page to download the latest program directly. Save it in the same directory as the .prn files you've prepared. Then run it.
 
 ## Use
 Launch the program - you'll have to allow it to run because it's not digitally signed. A dialogue will open resembling the following:
