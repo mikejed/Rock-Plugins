@@ -13,8 +13,6 @@ Start off by downloading copies of the .prn files you're using in Rock. Open the
 
 Do this for each of the labels you want to pre-print, and store them all together in a single directory. They're going to come out of the printer according to their file name, so you may want to prepend the file names with numbers.
 
-If you'd like, you can also download the files we use at my church from this repository.
-
 ### Get the program
 Once you've installed this plugin, you can download the program from `Admin Tools -> Power Tools -> External Applications`. But that just links you to the program in this repository, so you since you're already here, you can browse the version folders at the top of this page to download the latest program directly. Save it in the same directory as the .prn files you've prepared. Then run it.
 
