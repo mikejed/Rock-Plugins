@@ -185,7 +185,7 @@ For $lbl=1 To $numLabels
 			EndIf
 			FileWrite($file,$contents)
 			FileClose($file)
-			RunWait(@comspec & ' /c copy /b "' & $tmpfilepath & '" ' & $printerShareName,@scriptdir,@SW_HIDE)
+			RunWait(@comspec & ' /c copy /b "' & $tmpfilepath & '" "' & $printerShareName & '"',@scriptdir,@SW_HIDE)
 			FileDelete($tmpfilepath)
 		Next
 	EndIf
