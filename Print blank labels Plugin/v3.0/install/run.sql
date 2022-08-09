@@ -15,3 +15,11 @@ UPDATE [AttributeValue]
 	WHERE
 		[AttributeId] = @i_ExternalApplication_DownloadUrlAttributeId
 		AND [EntityId] = @i_PrintBlanksDVId;
+
+-- Add a new item to Administrator's Checklist
+DECLARE @AdminChecklistId INT = (SELECT TOP 1 [Id] FROM [DefinedType] WHERE [Guid] = '4bf34677-37e9-4e71-bd03-252b66c9373d');
+DECLARE @PrintBlanksChecklistGuid UNIQUEIDENTIFIER = '22edfb87-2e9c-428e-a1fc-c86df4e74d6a';
+DECLARE @ItemOrderValue INT = (SELECT count(1)+1 FROM [DefinedValue] WHERE [DefinedTypeId] = @AdminChecklistId);
+
+INSERT INTO [DefinedValue] ([Value],[IsSystem],[Guid],[Description],[DefinedTypeId],[Order])
+VALUES ('Install PrintBlanks windows program',0,@PrintBlanksChecklistGuid,'The Print Blank Labels plugin has recently been installed or updated. To get version 3 of the Windows appplication, go to Admin Tools &gt; Power Tools &gt; <a href="/admin/power-tools/apps">External Applications</a>, download the application, and run it on Windows.',@AdminChecklistId,@ItemOrderValue)
