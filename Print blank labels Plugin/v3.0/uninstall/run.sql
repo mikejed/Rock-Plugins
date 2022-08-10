@@ -1,1 +1,2 @@
--- v3 only updates values. The uninstall in v2.2 will remove the records updated, so nothing is needed from this phase.
+DECLARE @PrintBlanksChecklistGuid UNIQUEIDENTIFIER = '22edfb87-2e9c-428e-a1fc-c86df4e74d6a';
+DELETE FROM [DefinedValue] WHERE [Guid] = @PrintBlanksChecklistGuid;
