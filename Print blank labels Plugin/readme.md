@@ -46,5 +46,33 @@ Launch the program - you'll have to allow it to run because it's not digitally s
 Your settings will be saved and auto-selected the next time you run the app, and the labels you configured last time will be auto-loaded as well. If you want to reset to the defaults, simply delete the .ini and .bak files that get created in the same directory as this app (one of each).
 
 ## Troubleshooting
-**I got an error when trying to load remote files: `The requested resource does not support http method 'GET'`**
+#### 1. I got an error when trying to load remote files: `The requested resource does not support http method 'GET'`
 * This occurs if your server's API isn't accessible to the program - I've seen this once on a system protected by Cloudflare, but have tried to add a friendlier error message in this case that explains that. But there may be other circumstances this occurs too. If you get this, you may need to download your labels manually and browse your computer to load them instead.
+
+#### 2. I'm trying to update from v2.1 and I'm getting an error in the Rock Shop.
+* If the error starts like this:
+`Cannot insert duplicate key row in object 'dbo.DefinedValue' with unique index 'IX_Guid'. The duplicate key value is (b138de05-b4b2-4c6a-a2de-079c8df55be8). Cannot insert duplicate key row in object 'dbo.BinaryFile' with unique index 'IX_Guid'. The duplicate key value is (543dab6f-f604-4b92-a03e-1469008d1059). Violation of PRIMARY KEY constraint 'PK_dbo.BinaryFileData'. Cannot insert duplicate key in object 'dbo.BinaryFileData'.`
+then this was my fault. I messed up back in the first week or two of v2.1's release and anyone who installed the plugin during that time may run into this issue when updating from v2.1 to v3.0.
+* The fix is to go to Admin Tools > Power Tools > SQL Command in your Rock instance, set the "Select Command" to `No`, and run this SQL:
+```
+DECLARE @t_ExternalApplicationDefinedTypeGuid AS UNIQUEIDENTIFIER = '1fac459c-5f62-4e7c-8933-61ff9fe2dfef';
+DECLARE @i_ExternalApplicationDefinedTypeId AS INT = (SELECT [Id] FROM [DefinedType] WHERE [Guid] = @t_ExternalApplicationDefinedTypeGuid);
+
+DECLARE @i_ExternalApplication_IconAttributeId AS INT = (SELECT TOP 1 [Id] FROM [Attribute] WHERE [EntityTypeQualifierValue] = @i_ExternalApplicationDefinedTypeId AND [Key] = 'Icon');
+DECLARE @i_ExternalApplication_VendorAttributeId AS INT = (SELECT TOP 1 [Id] FROM [Attribute] WHERE [EntityTypeQualifierValue] = @i_ExternalApplicationDefinedTypeId AND [Key] = 'Vendor');
+DECLARE @i_ExternalApplication_DownloadUrlAttributeId AS INT = (SELECT TOP 1 [Id] FROM [Attribute] WHERE [EntityTypeQualifierValue] = @i_ExternalApplicationDefinedTypeId AND [Key] = 'DownloadUrl');
+
+DECLARE @g_PrintBlanksDVGuid AS UNIQUEIDENTIFIER = 'b138de05-b4b2-4c6a-a2de-079c8df55be8';
+DECLARE @i_PrintBlanksDVId AS INT = (SELECT TOP 1 [Id] FROM [DefinedValue] WHERE [Guid] = @g_PrintBlanksDVGuid);
+DECLARE @g_BinaryFile_PrintBlanksGuid AS UNIQUEIDENTIFIER = '543dab6f-f604-4b92-a03e-1469008d1059';
+DECLARE @i_BinaryFile_DatabaseStorageId AS INT= (SELECT TOP 1 [Id] FROM [EntityType] WHERE [Name] = 'Rock.Storage.Provider.Database');
+DECLARE @i_BinaryFile_PrintBlanksIconId AS INT = (SELECT [Id] FROM [BinaryFile] WHERE [Guid] = @g_BinaryFile_PrintBlanksGuid);
+
+DELETE FROM [DefinedValue] WHERE [Guid] = @g_PrintBlanksDVGuid;
+DELETE FROM [BinaryFile] WHERE [Guid] = @g_BinaryFile_PrintBlanksGuid;
+
+DELETE FROM [AttributeValue] WHERE [EntityId] = @i_PrintBlanksDVId AND [AttributeId] = @i_ExternalApplication_IconAttributeId;
+DELETE FROM [AttributeValue] WHERE [EntityId] = @i_PrintBlanksDVId AND [AttributeId] = @i_ExternalApplication_VendorAttributeId;
+DELETE FROM [AttributeValue] WHERE [EntityId] = @i_PrintBlanksDVId AND [AttributeId] = @i_ExternalApplication_DownloadUrlAttributeId;
+```
+* It will tell you that (5) rows were updated. Now you'll be able to update through the Rock Shop as usual and you shouldn't have any more issues in the future. Sorry about this!
